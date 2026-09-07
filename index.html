@@ -1,0 +1,533 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Что Приготовить Сегодня? — канал с рецептами в MAX</title>
+<meta name="description" content="Каждый день простые и вкусные рецепты из доступных продуктов. Подписывайся на канал в MAX.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,500;9..144,600;9..144,700&family=Caveat:wght@600;700&family=Instrument+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --kraft: #e9dfc7;
+    --kraft-dark: #ddd0ac;
+    --paper: #fbf6ea;
+    --ink: #2c241a;
+    --ink-soft: #5c5140;
+    --tomato: #b8432c;
+    --tomato-dark: #93321f;
+    --sage: #6a7a55;
+    --butter: #e3ac3f;
+    --line: rgba(44,36,26,0.18);
+    --radius: 3px;
+  }
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:
+      radial-gradient(ellipse at 20% 0%, rgba(255,255,255,0.35), transparent 55%),
+      var(--kraft);
+    background-attachment: fixed;
+    color:var(--ink);
+    font-family:'Instrument Sans', sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  /* subtle paper grain */
+  body::before{
+    content:"";
+    position:fixed; inset:0;
+    pointer-events:none;
+    opacity:.5;
+    background-image:
+      radial-gradient(rgba(44,36,26,0.05) 1px, transparent 1px);
+    background-size: 3px 3px;
+    z-index:0;
+  }
+  a{color:inherit;}
+  img{max-width:100%;display:block;}
+  .wrap{max-width:1040px;margin:0 auto;padding:0 24px;position:relative;z-index:1;}
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation-duration:0.01ms !important; transition-duration:0.01ms !important;}
+  }
+
+  /* ---------- HEADER ---------- */
+  header{
+    padding:22px 0;
+    position:relative; z-index:2;
+  }
+  .header-row{
+    display:flex; align-items:center; justify-content:space-between;
+    gap:16px;
+  }
+  .brand{
+    display:flex; align-items:center; gap:10px;
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:1.05rem;
+    color:var(--ink);
+    text-decoration:none;
+  }
+  .brand-mark{
+    width:34px;height:34px;border-radius:50%;
+    background:var(--tomato);
+    color:var(--paper);
+    display:flex;align-items:center;justify-content:center;
+    font-size:1.1rem;
+    box-shadow: inset 0 0 0 2px rgba(255,255,255,.25);
+    flex-shrink:0;
+  }
+  .header-cta{
+    font-family:'Instrument Sans',sans-serif;
+    font-weight:600;
+    font-size:0.9rem;
+    padding:10px 18px;
+    border-radius:999px;
+    background:var(--ink);
+    color:var(--paper);
+    text-decoration:none;
+    white-space:nowrap;
+    transition:transform .15s ease, background .15s ease;
+  }
+  .header-cta:hover{background:var(--tomato-dark); transform:translateY(-1px);}
+
+  /* ---------- HERO ---------- */
+  .hero{
+    padding:56px 0 40px;
+    position:relative;
+    z-index:1;
+  }
+  .hero-inner{
+    display:grid;
+    grid-template-columns: 1.15fr 0.85fr;
+    gap:56px;
+    align-items:center;
+  }
+  .kicker{
+    font-family:'Caveat', cursive;
+    font-size:1.5rem;
+    color:var(--tomato-dark);
+    transform:rotate(-2deg);
+    display:inline-block;
+    margin:0 0 6px 4px;
+  }
+  h1{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(2.1rem, 4.2vw, 3.1rem);
+    line-height:1.08;
+    letter-spacing:-0.01em;
+    margin:0 0 20px;
+    max-width:14ch;
+  }
+  .hero p.lede{
+    font-size:1.08rem;
+    line-height:1.6;
+    color:var(--ink-soft);
+    max-width:46ch;
+    margin:0 0 28px;
+  }
+  .hero-ctas{
+    display:flex; align-items:center; gap:18px; flex-wrap:wrap;
+  }
+  .btn-primary{
+    font-family:'Instrument Sans',sans-serif;
+    font-weight:600;
+    font-size:1rem;
+    padding:14px 26px;
+    background:var(--tomato);
+    color:var(--paper);
+    border-radius:999px;
+    text-decoration:none;
+    display:inline-block;
+    box-shadow: 0 6px 0 var(--tomato-dark);
+    transition: transform .12s ease, box-shadow .12s ease;
+  }
+  .btn-primary:hover{transform:translateY(2px); box-shadow:0 4px 0 var(--tomato-dark);}
+  .btn-primary:active{transform:translateY(6px); box-shadow:0 0 0 var(--tomato-dark);}
+  .hero-meta{
+    font-size:0.92rem;
+    color:var(--ink-soft);
+  }
+  .hero-meta strong{color:var(--ink);}
+
+  /* recipe index card */
+  .card-stage{
+    position:relative;
+    min-height:340px;
+  }
+  .index-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:2px;
+    padding:26px 26px 22px;
+    width:100%;
+    max-width:340px;
+    margin:0 auto;
+    transform:rotate(-3deg);
+    box-shadow: 0 18px 34px rgba(44,36,26,0.18), 0 2px 0 rgba(255,255,255,.5) inset;
+    position:relative;
+  }
+  .index-card::before{
+    content:"";
+    position:absolute; left:24px; right:24px; top:52px;
+    height:1px;
+    background: repeating-linear-gradient(90deg, var(--line) 0 6px, transparent 6px 11px);
+  }
+  .tape{
+    position:absolute; top:-14px; left:50%;
+    transform:translateX(-50%) rotate(-4deg);
+    width:92px; height:30px;
+    background: rgba(227,172,63,0.55);
+    border:1px solid rgba(227,172,63,.7);
+  }
+  .index-card h3{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.2rem;
+    margin:14px 0 14px;
+  }
+  .index-card ul{
+    list-style:none; margin:0; padding:0;
+    display:flex; flex-direction:column; gap:9px;
+  }
+  .index-card li{
+    display:flex; gap:10px; align-items:baseline;
+    font-size:0.94rem; color:var(--ink-soft);
+    line-height:1.4;
+  }
+  .index-card li::before{
+    content:"";
+    width:6px;height:6px;border-radius:50%;
+    background:var(--sage);
+    flex-shrink:0;
+    margin-top:6px;
+  }
+  .stamp{
+    position:absolute; bottom:-18px; right:-14px;
+    width:78px;height:78px;
+    border-radius:50%;
+    background:var(--sage);
+    color:var(--paper);
+    display:flex; align-items:center; justify-content:center;
+    text-align:center;
+    font-family:'Caveat', cursive;
+    font-weight:700;
+    font-size:0.98rem;
+    line-height:1.1;
+    transform:rotate(9deg);
+    box-shadow: 0 8px 16px rgba(44,36,26,.25), inset 0 0 0 2px rgba(255,255,255,.25);
+  }
+
+  /* ---------- TAGS STRIP ---------- */
+  .tags-strip{
+    padding:8px 0 48px;
+  }
+  .tags-row{
+    display:flex; gap:12px; flex-wrap:wrap;
+    padding-top:8px;
+    border-top:1px solid var(--line);
+  }
+  .tag{
+    font-size:0.88rem;
+    padding:8px 16px;
+    border-radius:999px;
+    border:1px solid var(--line);
+    background:var(--paper);
+    color:var(--ink-soft);
+  }
+
+  /* ---------- WHAT'S INSIDE ---------- */
+  .section{padding:56px 0;}
+  .section-head{
+    max-width:46ch;
+    margin-bottom:36px;
+  }
+  .section-head .kicker{margin-left:0;}
+  h2{
+    font-family:'Fraunces', serif;
+    font-weight:600;
+    font-size:clamp(1.6rem, 3vw, 2.1rem);
+    margin:0 0 12px;
+    line-height:1.15;
+  }
+  .section-head p{
+    color:var(--ink-soft);
+    font-size:1.02rem;
+    line-height:1.6;
+    margin:0;
+  }
+
+  .cards-grid{
+    display:grid;
+    grid-template-columns:repeat(3,1fr);
+    gap:26px;
+  }
+  .mini-card{
+    background:var(--paper);
+    border:1px solid var(--line);
+    border-radius:2px;
+    padding:22px 20px 20px;
+    position:relative;
+  }
+  .mini-card:nth-child(1){transform:rotate(-1.4deg);}
+  .mini-card:nth-child(2){transform:rotate(0.8deg);}
+  .mini-card:nth-child(3){transform:rotate(-0.6deg);}
+  .mini-card .pin{
+    width:9px;height:9px;border-radius:50%;
+    background:var(--tomato);
+    position:absolute; top:14px; left:14px;
+    box-shadow:0 1px 2px rgba(0,0,0,.3);
+  }
+  .mini-card h4{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.08rem;
+    margin:10px 0 8px;
+  }
+  .mini-card p{
+    font-size:0.92rem;
+    color:var(--ink-soft);
+    line-height:1.55;
+    margin:0;
+  }
+
+  /* ---------- HOW IT WORKS ---------- */
+  .how{
+    background:var(--kraft-dark);
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+  }
+  .how-inner{
+    display:grid;
+    grid-template-columns: 0.9fr 1.1fr;
+    gap:48px;
+    align-items:center;
+  }
+  .steps{
+    display:flex; flex-direction:column; gap:20px;
+  }
+  .step{
+    display:flex; gap:16px; align-items:flex-start;
+  }
+  .step-num{
+    font-family:'Fraunces',serif;
+    font-weight:600;
+    font-size:1.4rem;
+    color:var(--tomato);
+    width:34px;flex-shrink:0;
+  }
+  .step-body h5{
+    margin:0 0 4px;
+    font-size:1rem;
+    font-weight:600;
+  }
+  .step-body p{
+    margin:0;
+    font-size:0.92rem;
+    color:var(--ink-soft);
+    line-height:1.55;
+  }
+  .plate{
+    width:100%;
+    aspect-ratio:1/1;
+    max-width:300px;
+    margin:0 auto;
+    border-radius:50%;
+    background:
+      radial-gradient(circle at 50% 50%, var(--paper) 0 58%, var(--kraft-dark) 58% 62%, var(--paper) 62% 100%);
+    border:1px solid var(--line);
+    display:flex; align-items:center; justify-content:center;
+    box-shadow: 0 20px 40px rgba(44,36,26,.18);
+    position:relative;
+  }
+  .plate-inner{
+    text-align:center;
+    font-family:'Fraunces', serif;
+  }
+  .plate-inner .num{
+    font-size:3rem;
+    font-weight:600;
+    color:var(--tomato);
+    line-height:1;
+  }
+  .plate-inner .label{
+    font-family:'Instrument Sans',sans-serif;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+    margin-top:6px;
+  }
+
+  /* ---------- FINAL CTA ---------- */
+  .final{
+    padding:70px 0 60px;
+    text-align:center;
+  }
+  .final .kicker{display:block; margin:0 0 8px;}
+  .final h2{max-width:20ch; margin-left:auto; margin-right:auto;}
+  .final p{
+    color:var(--ink-soft);
+    max-width:44ch;
+    margin:0 auto 28px;
+    font-size:1.02rem;
+    line-height:1.6;
+  }
+
+  footer{
+    border-top:1px solid var(--line);
+    padding:26px 0 40px;
+  }
+  .footer-row{
+    display:flex; justify-content:space-between; align-items:center;
+    flex-wrap:wrap; gap:12px;
+    font-size:0.85rem;
+    color:var(--ink-soft);
+  }
+  .footer-row a{text-decoration:none; border-bottom:1px solid var(--line);}
+
+  @media (max-width: 860px){
+    .hero-inner, .how-inner{grid-template-columns:1fr;}
+    .card-stage{order:-1; margin-bottom:8px;}
+    .cards-grid{grid-template-columns:1fr;}
+    .mini-card{transform:none !important;}
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="wrap header-row">
+    <a class="brand" href="#top">
+      <span class="brand-mark">🍅</span>
+      Что Приготовить Сегодня?
+    </a>
+    <a class="header-cta" href="https://max.ru/channel_chtogotovit" target="_blank" rel="noopener">Открыть канал</a>
+  </div>
+</header>
+
+<section class="hero" id="top">
+  <div class="wrap hero-inner">
+    <div>
+      <span class="kicker">рецепт дня —</span>
+      <h1>Не знаешь, что приготовить сегодня?</h1>
+      <p class="lede">Каждый день — простой и вкусный рецепт из доступных продуктов. Быстрые завтраки, сытные ужины, десерты и кулинарные находки для всей семьи.</p>
+      <div class="hero-ctas">
+        <a class="btn-primary" href="https://max.ru/channel_chtogotovit" target="_blank" rel="noopener">Подписаться в MAX</a>
+        <span class="hero-meta">Готовь вкусно. Трать меньше времени.</span>
+      </div>
+    </div>
+    <div class="card-stage">
+      <div class="index-card">
+        <div class="tape"></div>
+        <h3>Сегодня в канале</h3>
+        <ul>
+          <li>Завтрак за 10 минут</li>
+          <li>Ужин на сковороде, один противень</li>
+          <li>Десерт без духовки</li>
+          <li>Находка недели из супермаркета</li>
+        </ul>
+        <div class="stamp">готовь<br>сегодня</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<div class="tags-strip">
+  <div class="wrap">
+    <div class="tags-row">
+      <span class="tag">Быстрые завтраки</span>
+      <span class="tag">Сытные ужины</span>
+      <span class="tag">Десерты</span>
+      <span class="tag">Доступные продукты</span>
+      <span class="tag">Для всей семьи</span>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="wrap">
+    <div class="section-head">
+      <span class="kicker">что внутри —</span>
+      <h2>Рецепты, которые реально готовят</h2>
+      <p>Никакой экзотики и труднодоступных ингредиентов — только то, что можно приготовить сегодня вечером из того, что уже есть дома или в ближайшем магазине.</p>
+    </div>
+    <div class="cards-grid">
+      <div class="mini-card">
+        <span class="pin"></span>
+        <h4>Просто и по шагам</h4>
+        <p>Рецепт — это список продуктов и понятная последовательность действий, без лишних слов.</p>
+      </div>
+      <div class="mini-card">
+        <span class="pin"></span>
+        <h4>Доступные продукты</h4>
+        <p>Ничего дефицитного: всё можно найти в обычном супермаркете рядом с домом.</p>
+      </div>
+      <div class="mini-card">
+        <span class="pin"></span>
+        <h4>Каждый день новое</h4>
+        <p>Публикации выходят регулярно — открыл канал и сразу знаешь, что готовить.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="how">
+  <div class="wrap section" style="padding-top:56px;padding-bottom:56px;">
+    <div class="how-inner">
+      <div>
+        <span class="kicker">как подписаться —</span>
+        <h2 style="margin-top:8px;">Три шага до первого рецепта</h2>
+        <div class="steps" style="margin-top:22px;">
+          <div class="step">
+            <span class="step-num">1</span>
+            <div class="step-body">
+              <h5>Открой канал</h5>
+              <p>Нажми «Подписаться в MAX» или перейди по ссылке max.ru/channel_chtogotovit.</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-num">2</span>
+            <div class="step-body">
+              <h5>Подпишись</h5>
+              <p>Один тап — и новые рецепты будут приходить прямо в MAX.</p>
+            </div>
+          </div>
+          <div class="step">
+            <span class="step-num">3</span>
+            <div class="step-body">
+              <h5>Сохраняй и готовь</h5>
+              <p>Сохраняй понравившиеся рецепты и возвращайся к ним, когда понадобится.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="plate">
+        <div class="plate-inner">
+          <div class="num">2</div>
+          <div class="label">подписчика уже с нами</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="wrap">
+    <span class="kicker">удивляй близких —</span>
+    <h2>Подпишись и сохраняй рецепты</h2>
+    <p>Новый рецепт — каждый день. Без лишних слов, только то, что действительно стоит приготовить.</p>
+    <a class="btn-primary" href="https://max.ru/channel_chtogotovit" target="_blank" rel="noopener">Подписаться в MAX</a>
+  </div>
+</section>
+
+<footer>
+  <div class="wrap footer-row">
+    <span>🍅 Что Приготовить Сегодня?</span>
+    <a href="https://max.ru/channel_chtogotovit" target="_blank" rel="noopener">max.ru/channel_chtogotovit</a>
+  </div>
+</footer>
+
+</body>
+</html>
