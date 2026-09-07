@@ -386,7 +386,16 @@
     color:var(--ink-soft);
   }
   .footer-row a{text-decoration:none; border-bottom:1px solid var(--line);}
-
+.hero-photo{
+    width:100%;
+    max-width:520px;
+    margin:auto;
+    border-radius:16px;
+    display:block;
+    box-shadow:
+        0 20px 40px rgba(44,36,26,.25),
+        0 3px 0 rgba(255,255,255,.2) inset;
+}
   @media (max-width: 860px){
     .hero-inner, .how-inner{grid-template-columns:1fr;}
     .card-stage{order:-1; margin-bottom:8px;}
@@ -418,19 +427,12 @@
         <span class="hero-meta">Готовь вкусно. Трать меньше времени.</span>
       </div>
     </div>
-    <div class="card-stage">
-      <div class="index-card">
-        <div class="tape"></div>
-        <h3>Сегодня в канале</h3>
-        <ul>
-          <li>Завтрак за 10 минут</li>
-          <li>Ужин на сковороде, один противень</li>
-          <li>Десерт без духовки</li>
-          <li>Находка недели из супермаркета</li>
-        </ul>
-        <div class="stamp">готовь<br>сегодня</div>
-      </div>
-    </div>
+   <div class="card-stage">
+    <img
+        src="images/hero.jpg"
+        alt="Что приготовить сегодня"
+        class="hero-photo">
+</div>
   </div>
 </section>
 
