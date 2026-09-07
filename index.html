@@ -156,7 +156,8 @@
   /* recipe index card */
   .card-stage{
     position:relative;
-    min-height:340px;
+    min-height:auto;
+}
   }
   .index-card{
     background:var(--paper);
@@ -397,11 +398,26 @@
         0 3px 0 rgba(255,255,255,.2) inset;
 }
   @media (max-width: 860px){
-    .hero-inner, .how-inner{grid-template-columns:1fr;}
-    .card-stage{order:-1; margin-bottom:8px;}
-    .cards-grid{grid-template-columns:1fr;}
-    .mini-card{transform:none !important;}
-  }
+    .hero-inner,
+    .how-inner{
+        grid-template-columns:1fr;
+        gap:24px;
+    }
+
+    .card-stage{
+        order:0;
+        margin-bottom:0;
+        min-height:auto;
+    }
+
+    .cards-grid{
+        grid-template-columns:1fr;
+    }
+
+    .mini-card{
+        transform:none !important;
+    }
+}
 </style>
 </head>
 <body>
